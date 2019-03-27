@@ -1,5 +1,5 @@
 /*
- *        File: extremetemps.cc
+ *        File: prices.cc
  *      Author: Emma Rice
  *        Date: March 26, 2019
  * Description: ADD DESCRIPTION.
@@ -12,63 +12,84 @@
 using namespace std;
 
 //function prototypes
-int findMaxPrice(const int array[], int size);
+int findMaxPrice(const double array[], int size);
 // function: findMaxPrice
 // purpose: finds the maximum value in an array
-// parameters: array[] - array of type int
+// parameters: array[] - array of type double
 //             size - the number of elements stored in array[]
 // pre conditions: array has values stored in number of elements
 //                 provided by size
-// post conditions: returns maximum value stored in array
-int findMinPrice(const int array[], int size);
+// post conditions: returns maximum value's index stored in array
+int findMinPrice(const double array[], int size);
 // function: findMinPrice
 // purpose: finds the minimum value in an array
-// parameters: array[] - arrayof type int
+// parameters: array[] - arrayof type double
 //             size - the number of elements stored in array[]
 // pre conditions: array has values stored in number of elements
 //                 provided by size
-// post conditions: returns minimum value stored in array
+// post conditions: returns minimum value's index stored in array
 
 
 int main(int argc, char const *argv[])
 {
 
-    int price[6];
-    int size(30), temp, index;
+    double prices[6], price;
+    string objects[6], object;
+    int size(6), index;
+    
 
     ifstream priceStream, objectStream;
-    string inFile = "athens_low_temps.txt";
-    inStream.open(inFile.c_str());
+    string inFile = "data1.txt";            //putting together price array
+    priceStream.open(inFile.c_str());
 
-    if (inStream.fail())
+    if (priceStream.fail())
     {
       cout << "Error: unable to open file.\n";
       return 0;
     }
 
-    inStream >> temp;
+    priceStream >> price;
     for (index = 0; index < size; index++)
     {
-      dailyLow[index] = temp;
-      inStream >> temp;
+      prices[index] = price;
+      priceStream >> price;
     }
 
-    inStream.close();
+    priceStream.close();
 
-    cout << "Highest temp was " << findMax(dailyLow, size) << " degrees.\n";
-    cout << "Lowest temp was " << findMin(dailyLow, size) << " degrees.\n";
-    cout.setf(ios::fixed);
-	  cout.setf(ios::showpoint);
-	  cout.precision(1);
-    cout << "Average low temp was " << findAverage(dailyLow, size) << " degrees.\n";
+    inFile = "data2.txt";              //putting together object array
+    objectStream.open(inFile.c_str());
+
+    if (objectStream.fail())
+    {
+      cout << "Error: unable to open file.\n";
+      return 0;
+    }
+
+    objectStream >> object;
+    for (index = 0; index < size; index++)
+    {
+      objects[index] = object;
+      objectStream >> object;
+    }
+
+    objectStream.close();
+
+    cout.setf(ios::fixed);            //show 2 decimal places
+    cout.setf(ios::showpoint);
+    cout.precision(2);
+    
+    cout << "The most expensive part is the " << objects[findMaxPrice(prices, size)] << " ($" << prices[findMaxPrice(prices, size)] << ")\n";
+    cout << "The least expensive part is the " << objects[findMinPrice(prices, size)] << " ($" << prices[findMinPrice(prices, size)] << ")\n";
 
     return 0;
 }// main
 
 
-int findMaxPrice(const int array[], int size)
+int findMaxPrice(const double array[], int size)
 {
-	int max(0), maxIndex, i(0);
+	double max = array[0];
+  int maxIndex, i(0);
 
 	for (i = 0; i < size; i++)
 	{
@@ -82,9 +103,10 @@ int findMaxPrice(const int array[], int size)
 	return maxIndex;
 } //findMaxPrice
 
-int findMinPrice(const int array[], int size)
+int findMinPrice(const double array[], int size)
 {
-	int min = array[0], minIndex, i(0);
+	double min = array[0];
+  int minIndex(0), i(0);
 
 	for (i = 0; i < size; i++)
 	{
